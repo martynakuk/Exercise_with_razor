@@ -1,0 +1,109 @@
+﻿@page "/students"
+@using cw11.Data;
+@inject IStudentService StudentService
+@inject NavigationManager NM
+@inject IJSRuntime JS
+
+<h3>Students</h3>
+
+@if (_students is null)
+{
+    <div>Loading</div>
+}
+else
+{
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>Avatar</th>
+                <th @onclick=@(() => Sort("FirstName"))>First Name</th>
+                <th @onclick=@(() => Sort("LastName"))>Last Name</th>
+                <th>Birthdate</th>
+                <th @onclick=@(() => Sort("Studies"))>Studies</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _students)
+            {
+                <tr>
+                    <td><img src=@item.AvatarUrl /></td>
+                    <td @onclick=@(() => NavigateTo($"/students/{item.Id}"))>@item.FirstName</td>
+                    <td @onclick=@(() => NavigateTo($"/students/{item.Id}"))>@item.LastName</td>
+                    <td @onclick=@(() => NavigateTo($"/students/{item.Id}"))>@item.Birthdate.ToString("dd'/'MM'/'yyyy")</td>
+                    <td @onclick=@(() => NavigateTo($"/students/{item.Id}"))>@item.Studies</td>
+                    <td><button @onclick=@(() => Remove(item.Id))><img src=https://img.favpng.com/10/5/25/x-button-png-png-favpng-cdjBRz62XFnndEQMJ3eP4s1H6.jpg /></button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Student>? _students;
+    private Tuple<string, SortDirection?> _currentSort;
+
+    enum SortDirection
+    {
+        ASC,
+        DESC
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _students = StudentService.GetStudents().ToList();
+        _currentSort = new Tuple<string, SortDirection?>("", null);
+    }
+
+    private async Task NavigateTo(string url)
+    {
+        NM.NavigateTo(url);
+    }
+
+    private void Sort(string columnName)
+    {
+        if (_students is not null)
+        {
+            if (_currentSort.Item1 == columnName)
+            {
+                _currentSort = new Tuple<string, SortDirection?>(columnName, _currentSort.Item2 == SortDirection.ASC ? SortDirection.DESC : SortDirection.ASC);
+            }
+            else
+            {
+                _currentSort = new Tuple<string, SortDirection?>(columnName, SortDirection.DESC);
+            }
+
+            switch (_currentSort.Item2)
+            {
+                case SortDirection.ASC:
+                    _students = _students.OrderBy(e => e.GetType().GetProperty(columnName)?.GetValue(e)).ToList();
+                    break;
+                case SortDirection.DESC:
+                    _students = _students.OrderByDescending(e => e.GetType().GetProperty(columnName)?.GetValue(e)).ToList();
+                    break;
+
+            }
+
+        }
+    }
+
+    private async Task Remove(int ID)
+    {
+
+        if (await JS.InvokeAsync<bool>("confirm", "Czy chcesz usunąć tego studenta?"))
+        {
+            if (_students is not null)
+            {
+                StudentService.RemoveByID(ID);
+                var studentToRemove = _students.FirstOrDefault(e => e.Id == ID);
+                if (studentToRemove != null)
+                {
+                    _students.Remove(studentToRemove);
+                }
+            }
+        }
+
+    }
+}

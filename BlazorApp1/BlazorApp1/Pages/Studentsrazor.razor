@@ -1,0 +1,60 @@
+﻿@page "/students/{ID:int}"
+@using cw11.Data;
+@inject IStudentService StudentService;
+
+@if (_student is null)
+{
+    <div>Loading</div>
+}
+else
+{
+    <h3>Student's details'</h3>
+    <table>
+
+        <tbody>
+            <tr>
+                <td>First name:</td>
+                <td>@_student.FirstName</td>
+                <td>Avatar</td>
+                <td>@_student.AvatarUrl</td>
+            </tr>
+
+            <tr>
+                <td>Last name:</td>
+                <td>@_student.LastName</td>
+                <td></td>
+                <td rowspan="3"><img src=@_student.AvatarUrl /></td>
+            </tr>
+
+            <tr>
+                <td>Birthdate:</td>
+                <td>@_student.Birthdate.ToString("dd'/'MM'/'yyyy")</td>
+            </tr>
+
+            <tr>
+                <td>Studies:</td>
+                <td>@_student.Studies</td>
+                <td></td>
+
+            </tr>
+
+        </tbody>
+    </table>
+}
+
+
+
+<a href="/students"><img src=https://thumbs.dreamstime.com/b/return-button-square-d-push-sign-177296808.jpg /></a>
+
+@code {
+    [Parameter]
+    public int ID { get; set; }
+    private Student? _student;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        _student = StudentService.GetStudentById(ID);
+    }
+}

@@ -1,0 +1,24 @@
+h3[b-bfl27e2pq8] {
+    text-decoration: underline;
+}
+
+table[b-bfl27e2pq8] {
+    width: 60%;
+    text-align: center;
+}
+
+td[b-bfl27e2pq8], th[b-bfl27e2pq8] {
+    padding: 10px;
+}
+
+    th:nth-child(-n+5)[b-bfl27e2pq8], td:nth-child(-n+5)[b-bfl27e2pq8] {
+        border: 1px solid black;
+    }
+
+button[b-bfl27e2pq8] {
+    border: none;
+}
+
+img[b-bfl27e2pq8] {
+    width: 50px;
+}

@@ -1,0 +1,40 @@
+img[b-mhjj8i8d9c] {
+    width: 120px;
+}
+
+h3[b-mhjj8i8d9c] {
+    text-decoration: underline;
+}
+
+table[b-mhjj8i8d9c] {
+    text-align: center;
+    padding-bottom: 30px;
+    border-collapse: separate;
+    border-spacing: 15px;
+}
+
+tr:nth-child(1) td:nth-child(4)[b-mhjj8i8d9c] {
+    border-collapse: separate;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px groove#DCDCDC;
+    padding: 5px;
+}
+
+td:nth-child(2)[b-mhjj8i8d9c] {
+    width: 40%;
+    border-collapse: separate;
+    border: 1px groove#DCDCDC;
+    padding: 5px;
+}
+
+td:nth-child(1)[b-mhjj8i8d9c] {
+    text-align: right;
+    padding-right: 15px;
+}
+
+td:nth-child(3)[b-mhjj8i8d9c] {
+    text-align: right;
+}
